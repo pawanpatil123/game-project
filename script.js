@@ -1,38 +1,73 @@
+var stop = document.querySelector('#stop')
 var screen = document.querySelectorAll('.screen')
-var playbtn=document.querySelector("button")
-playbtn.addEventListener('click',function(){
-screen[1].style.transform= "translateY(-100%)"
+var playbtn = document.querySelector("button")
+var playground = document.querySelector(".playground")
+var time = document.querySelector(".time-score h4 span")
+var selected = ""
+var timevalue = 0
+var score = 0;
+var scorevalue = document.querySelector(" h5 span")
+var scoreresult = document.querySelector(" .result h5 span")
+
+playbtn.addEventListener('click', function () {
+  screen[1].style.transform = "translateY(-100%)"
 })
-var selected=""
-var playground=document.querySelector(".playground")
-var allelem=document.querySelectorAll('.elem')
-allelem.forEach(function(elem){
-  // console.log(elem)
-  elem.addEventListener('click',function(){
-  screen[2].style.transform="translateY(-200%)"
-selected=elem.childNodes[3].getAttribute("src")
-createimg();
+
+function catchimg() {
+  var images = document.querySelectorAll('.playground img')
+  images.forEach(function (elem) {
+    elem.addEventListener('click', function () {
+      score++
+      scorevalue.innerHTML = score
+    })
   })
-
-
-
-  function createimg(){
-    var newimg = document.createElement("img")
-    newimg.setAttribute("src",selected)
-   
-    playground.appendChild(newimg)
-    var obj= getrandom()
-    newimg.style.position="absolute"
-    newimg.style.left=obj.x+"%"
-    newimg.style.top=obj.y+"%"
-
-  }
-function getrandom(){
-  var x=Math.floor(Math.random()*100)
-  var y=Math.floor(Math.random()*100)
-  return {x,y}
 }
+var allelem = document.querySelectorAll('.elem')
+allelem.forEach(function (elem) {
+  elem.addEventListener('click', function () {
+    screen[2].style.transform = "translateY(-200%)"
+    selected = elem.childNodes[3].getAttribute("src")
+    var hero = 0;
+    var int = setInterval(() => {
+      createimg();
+      if (timevalue <= 10) {
+        hero = timevalue++
+        time.innerHTML = hero;
+
+      }
+    }, 1000);
+
+    catchimg()
+    setTimeout(() => {
+      scoreresult.innerHTML = score
+      playground.style.display = "none"
+      stop.style.display = "block"
+    }, 11000);
+  })
 })
+
+function createimg() {
+  var newimg = document.createElement("img")
+  newimg.setAttribute("src", selected)
+
+  playground.appendChild(newimg)
+  var obj = getrandom()
+  newimg.style.position = "absolute"
+  newimg.style.left = obj.x + "%"
+  newimg.style.top = obj.y + "%"
+  catchimg()
+  setTimeout(() => {
+    playground.removeChild(newimg)
+  }, 1400);
+
+
+}
+
+function getrandom() {
+  var x = Math.floor(Math.random() * 80)
+  var y = Math.floor(Math.random() * 80)
+  return { x, y }
+}
 
 
 
@@ -43,7 +78,7 @@ function getrandom(){
 // {name: "ALIEAN",img: "https://www.pngall.com/wp-content/uploads/5/Cute-Monster.png"}
 // ]
 // var cul=""
-// arr.forEach(function(elem,idx){   
+// arr.forEach(function(elem,idx){
 // cul+=`<div class="img">
 // <h3>${elem.name}</h3>
 // <img id=${idx} src="${elem.img}" alt="">
@@ -58,7 +93,7 @@ function getrandom(){
 //     //  console.log(arr[dets.target.id].img)
 //      var de=arr[dets.target.id].img;
 //        pic.setAttribute("src",de)
-// }) 
+// })
 // var count = 0;
 // var grow=0;
 // var h5 = document.querySelector('h5')
@@ -84,7 +119,7 @@ function getrandom(){
 //     {
 // var hero = grow++
 //   h4.innerHTML= "Time:"+hero;
-//   // console.log(grow++)  
+//   // console.log(grow++)
 //   }
 // },700)
 // setTimeout(() => {
